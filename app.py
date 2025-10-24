@@ -10,8 +10,8 @@ os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 # --- Cấu hình đăng nhập Google ---
 google_bp = make_google_blueprint(
-    client_id="CLIENT_ID_CUA_BAN",
-    client_secret="CLIENT_SECRET_CUA_BAN",
+    client_id="GOOGLE_CLIENT_ID",
+    client_secret="GOOGLE_CLIENT_ID",
     redirect_to="google_login"
 )
 app.register_blueprint(google_bp, url_prefix="/login")
