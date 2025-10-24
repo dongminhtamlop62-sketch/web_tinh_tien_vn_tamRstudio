@@ -1,80 +1,102 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trang Tính Tiền</title>
-<style>
-    body {
-        font-family: 'Segoe UI', Tahoma, sans-serif;
-        background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
-        text-align: center;
-        margin-top: 60px;
-    }
-    h1 {
-        font-size: 2rem;
-        color: #333;
-    }
-    form {
-        background: white;
-        display: inline-block;
-        padding: 25px 40px;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.15);
-        margin-top: 20px;
-    }
-    input {
-        margin: 10px;
-        padding: 10px;
-        width: 180px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        outline: none;
-        text-align: center;
-    }
-    input:focus {
-        border-color: #4CAF50;
-        box-shadow: 0 0 5px rgba(76,175,80,0.5);
-    }
-    button {
-        padding: 10px 20px;
-        background: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-    button:hover {
-        background: #45a049;
-    }
-    h2 {
-        color: #222;
-        margin-top: 30px;
-        font-size: 1.5rem;
-    }
-    table {
-        margin: 20px auto;
-        border-collapse: collapse;
-        width: 60%;
-        background: white;
-        border-radius: 10px;
-        overflow: hidden;
-        box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-    }
-    th, td {
-        border: 1px solid #ccc;
-        padding: 10px 15px;
-    }
-    th {
-        background: #4CAF50;
-        color: white;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trang Tính Tiền</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+            text-align: center;
+            margin-top: 50px;
+        }
+        h1 {
+            font-size: 2rem;
+            color: #333;
+        }
+        form {
+            background: white;
+            display: inline-block;
+            padding: 25px 40px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            margin-top: 20px;
+        }
+        input {
+            margin: 10px;
+            padding: 10px;
+            width: 180px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+        }
+        input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 5px rgba(76,175,80,0.5);
+        }
+        button {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #45a049;
+        }
+        h2 {
+            color: #222;
+            margin-top: 30px;
+            font-size: 1.4rem;
+        }
+        .google-btn {
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .google-btn img {
+            width: 20px;
+            height: 20px;
+            margin-right: 8px;
+        }
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+    </style>
 </head>
-
 <body>
     <h1>💰 Trang Tính Tiền</h1>
+
+    {% if username %}
+        <p>👋 Xin chào, <b>{{ username }}</b></p>
+        <a href="{{ url_for('logout') }}">
+            <button class="logout-btn">🚪 Đăng xuất</button>
+        </a>
+    {% else %}
+        <a href="{{ url_for('google.login') }}">
+            <button class="google-btn">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo">
+                <span>Đăng nhập bằng Google</span>
+            </button>
+        </a>
+    {% endif %}
 
     <form method="POST">
         <label>Giá (VNĐ):</label><br>
@@ -85,51 +107,7 @@
     </form>
 
     {% if tong_tien %}
-        <h2>Kết quả: {{ "{:,.0f}".format(tong_tien).replace(",", ".") }} VNĐ</h2>
-    {% endif %}
-
-    {% if lich_su %}
-        <h2>🧾 Lịch sử tính tiền:</h2>
-        <table>
-            <tr>
-                <th>Giá</th>
-                <th>Số lượng</th>
-                <th>Tổng</th>
-            </tr>
-            {% for item in lich_su %}
-            <tr>
-                <td>{{ "{:,.0f}".format(item.gia).replace(",", ".") }} VNĐ</td>
-                <td>{{ item.so_luong }}</td>
-                <td><b>{{ "{:,.0f}".format(item.tong).replace(",", ".") }} VNĐ</b></td>
-            </tr>
-            {% endfor %}
-        </table>
+        <h2>Kết quả: {{ tong_tien }} VNĐ</h2>
     {% endif %}
 </body>
 </html>
-{% if lich_su %}
-    <h2>🧾 Lịch sử tính tiền:</h2>
-    <table>
-        <tr>
-            <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Tổng</th>
-        </tr>
-        {% for item in lich_su %}
-        <tr>
-            <td>{{ "{:,.0f}".format(item.gia).replace(",", ".") }} VNĐ</td>
-            <td>{{ item.so_luong }}</td>
-            <td><b>{{ "{:,.0f}".format(item.tong).replace(",", ".") }} VNĐ</b></td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <!-- Nút xóa lịch sử -->
-    <form action="{{ url_for('clear_history') }}" method="get">
-        <button type="submit" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">
-            🗑 Xóa lịch sử
-        </button>
-    </form>
-{% endif %}
-<h1>💰 Xin chào, {{ username }}!</h1>
-<a href="{{ url_for('logout') }}" style="color:red; text-decoration:none;">🚪 Đăng xuất</a>
