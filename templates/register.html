@@ -2,15 +2,74 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đăng ký</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: linear-gradient(to bottom right, #bbdefb, #e3f2fd);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        margin: 0;
+    }
+    .register-box {
+        background: white;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        text-align: center;
+        width: 320px;
+    }
+    h2 {
+        color: #1976d2;
+        margin-bottom: 20px;
+    }
+    input {
+        width: 90%;
+        padding: 10px;
+        margin: 8px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+    input:focus {
+        border-color: #42a5f5;
+        outline: none;
+        box-shadow: 0 0 5px #90caf9;
+    }
+    button {
+        background: #1976d2;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 10px 20px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 16px;
+    }
+    button:hover {
+        background: #1565c0;
+    }
+    a {
+        text-decoration: none;
+        color: #1e88e5;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
 </head>
-<body style="text-align:center; font-family:sans-serif;">
-    <h2>📝 Đăng ký tài khoản mới</h2>
-    <form method="POST">
-        <input name="username" placeholder="Tên người dùng" required><br><br>
-        <input type="password" name="password" placeholder="Mật khẩu" required><br><br>
-        <button type="submit">Đăng ký</button>
-    </form>
-    <p>Đã có tài khoản? <a href="{{ url_for('login') }}">Đăng nhập</a></p>
+<body>
+    <div class="register-box">
+        <h2>📝 Đăng ký tài khoản</h2>
+        <form method="POST">
+            <input name="username" placeholder="Tên người dùng" required><br>
+            <input type="password" name="password" placeholder="Mật khẩu" required><br>
+            <button type="submit">Đăng ký</button>
+        </form>
+        <p>Đã có tài khoản? <a href="{{ url_for('login') }}">Đăng nhập</a></p>
+    </div>
 </body>
 </html>
