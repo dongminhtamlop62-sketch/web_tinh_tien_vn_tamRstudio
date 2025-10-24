@@ -112,6 +112,7 @@
 </body>
 </html>
 {% if lich_su %}
+
 <h2>🧾 Lịch sử tính tiền:</h2>
 <table style="margin:auto; border-collapse: collapse;">
     <tr><th>Giá</th><th>Số lượng</th><th>Tổng</th></tr>
@@ -123,4 +124,12 @@
     </tr>
     {% endfor %}
 </table>
+
+<br>
+<a href="{{ url_for('clear_history') }}">
+    <button style="background:#e74c3c; color:white; border:none; border-radius:8px; padding:8px 15px; cursor:pointer;">
+        🗑️ Xóa lịch sử
+    </button>
+</a>
 {% endif %}
+
