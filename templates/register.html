@@ -1,17 +1,109 @@
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        username = request.form["username"]
-        email = request.form["email"]
-        password = request.form["password"]
-        confirm = request.form["confirm"]
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng ký tài khoản</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(to right, #dfe9f3, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .register-box {
+            background: white;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 360px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+        }
+        input {
+            width: 85%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 4px rgba(76,175,80,0.4);
+        }
+        button {
+            width: 90%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+        .register-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        .register-btn:hover {
+            background: #43a047;
+        }
+        .google-btn {
+            background: white;
+            border: 1px solid #ccc;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .google-btn img {
+            width: 20px;
+        }
+        .google-btn:hover {
+            background: #f7f7f7;
+        }
+        p {
+            margin-top: 15px;
+            color: #666;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-box">
+        <h1>📝 Đăng ký tài khoản</h1>
 
-        if password != confirm:
-            return "❌ Mật khẩu nhập lại không khớp!"
+        <form method="POST" action="/register">
+            <input type="text" name="username" placeholder="Tên người dùng" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Mật khẩu" required>
+            <input type="password" name="confirm" placeholder="Nhập lại mật khẩu" required>
+            <button class="register-btn" type="submit">Đăng ký</button>
+        </form>
 
-        # Sau này bạn có thể lưu người dùng vào file JSON hoặc database
-        # Ví dụ (tạm thời lưu trong session)
-        session["username"] = username
-        return redirect(url_for("home"))
+        <p>Hoặc</p>
+        <a href="{{ url_for('google.login') }}">
+            <button class="google-btn" type="button">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                <span>Đăng ký bằng Google</span>
+            </button>
+        </a>
 
-    return render_template("register.html")
+        <p>Đã có tài khoản? <a href="{{ url_for('login') }}">Đăng nhập</a></p>
+    </div>
+</body>
+</html>
