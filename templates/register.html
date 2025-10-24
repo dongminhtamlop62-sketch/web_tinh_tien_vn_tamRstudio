@@ -1,113 +1,17 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Đăng ký</title>
-<style>
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #64b5f6, #2196f3, #1976d2);
-        background-size: 200% 200%;
-        animation: gradientMove 6s ease infinite;
-        overflow: hidden;
-    }
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        email = request.form["email"]
+        password = request.form["password"]
+        confirm = request.form["confirm"]
 
-    @keyframes gradientMove {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
+        if password != confirm:
+            return "❌ Mật khẩu nhập lại không khớp!"
 
-    .money-bg {
-        position: absolute;
-        font-size: 120px;
-        color: rgba(255,255,255,0.1);
-        animation: float 10s ease-in-out infinite;
-    }
-    .money-bg:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
-    .money-bg:nth-child(2) { top: 70%; left: 60%; animation-delay: 3s; }
-    .money-bg:nth-child(3) { top: 40%; left: 80%; animation-delay: 6s; }
+        # Sau này bạn có thể lưu người dùng vào file JSON hoặc database
+        # Ví dụ (tạm thời lưu trong session)
+        session["username"] = username
+        return redirect(url_for("home"))
 
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
-    }
-
-    .register-box {
-        background: rgba(255,255,255,0.95);
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        width: 320px;
-        text-align: center;
-        z-index: 1;
-    }
-
-    h2 {
-        color: #0d47a1;
-        margin-bottom: 20px;
-    }
-
-    input {
-        width: 90%;
-        padding: 10px;
-        margin: 8px 0;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-
-    input:focus {
-        border-color: #42a5f5;
-        box-shadow: 0 0 8px #90caf9;
-        outline: none;
-    }
-
-    button {
-        background: #1976d2;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 10px 20px;
-        cursor: pointer;
-        width: 100%;
-        font-size: 16px;
-        transition: background 0.3s;
-    }
-
-    button:hover {
-        background: #0d47a1;
-    }
-
-    a {
-        color: #1565c0;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
-</head>
-<body>
-    <div class="money-bg">💸</div>
-    <div class="money-bg">💰</div>
-    <div class="money-bg">💵</div>
-
-    <div class="register-box">
-        <h2>📝 Đăng ký tài khoản</h2>
-        <form method="POST">
-            <input name="username" placeholder="Tên người dùng" required><br>
-            <input type="password" name="password" placeholder="Mật khẩu" required><br>
-            <button type="submit">Đăng ký</button>
-        </form>
-        <p>Đã có tài khoản? <a href="{{ url_for('login') }}">Đăng nhập</a></p>
-    </div>
-</body>
-</html>
+    return render_template("register.html")
