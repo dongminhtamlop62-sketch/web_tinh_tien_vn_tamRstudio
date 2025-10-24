@@ -131,6 +131,18 @@ def logout():
     session.pop("username", None)
     session.pop("google_oauth_token", None)
     return redirect(url_for("home"))
+# --- Xóa lịch sử tính tiền ---
+@app.route("/clear_history")
+def clear_history():
+    username = session.get("username")
+    if not username:
+        return redirect(url_for("login"))
+
+    users = load_users()
+    if username in users:
+        users[username]["lich_su"] = []  # Xóa toàn bộ lịch sử
+        save_users(users)
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)
