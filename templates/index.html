@@ -107,3 +107,27 @@
     {% endif %}
 </body>
 </html>
+{% if lich_su %}
+    <h2>🧾 Lịch sử tính tiền:</h2>
+    <table>
+        <tr>
+            <th>Giá</th>
+            <th>Số lượng</th>
+            <th>Tổng</th>
+        </tr>
+        {% for item in lich_su %}
+        <tr>
+            <td>{{ "{:,.0f}".format(item.gia).replace(",", ".") }} VNĐ</td>
+            <td>{{ item.so_luong }}</td>
+            <td><b>{{ "{:,.0f}".format(item.tong).replace(",", ".") }} VNĐ</b></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Nút xóa lịch sử -->
+    <form action="{{ url_for('clear_history') }}" method="get">
+        <button type="submit" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">
+            🗑 Xóa lịch sử
+        </button>
+    </form>
+{% endif %}
