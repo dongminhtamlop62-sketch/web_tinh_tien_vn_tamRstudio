@@ -131,31 +131,5 @@
         </button>
     </form>
 {% endif %}
-{% if lich_su %}
-    <h2>🧾 Lịch sử tính tiền:</h2>
-    <table style="margin:auto; border-collapse: collapse;">
-        <tr>
-            <th>Thời gian</th>
-            <th>Giá</th>
-            <th>Số lượng</th>
-            <th>Tổng</th>
-        </tr>
-        {% for item in lich_su %}
-        <tr>
-            <td>{{ item.thoi_gian }}</td>
-            <td>{{ "{:,.0f}".format(item.gia).replace(",", ".") }} VNĐ</td>
-            <td>{{ item.so_luong }}</td>
-            <td><b>{{ "{:,.0f}".format(item.tong).replace(",", ".") }} VNĐ</b></td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <!-- Nút xóa lịch sử -->
-    <form action="{{ url_for('clear_history') }}" method="get">
-        <button type="submit" style="background:#e74c3c; color:white; border:none; padding:8px 15px; border-radius:6px; cursor:pointer;">
-            🗑 Xóa lịch sử
-        </button>
-    </form>
-{% endif %}
 <h1>💰 Xin chào, {{ username }}!</h1>
 <a href="{{ url_for('logout') }}" style="color:red; text-decoration:none;">🚪 Đăng xuất</a>
