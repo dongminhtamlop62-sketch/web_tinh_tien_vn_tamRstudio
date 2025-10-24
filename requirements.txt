@@ -1,3 +1,6 @@
+
+flask
 flask-dance
+requests
 gunicorn
 
