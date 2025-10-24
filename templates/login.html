@@ -5,63 +5,105 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Đăng nhập</title>
 <style>
+    * {
+        box-sizing: border-box;
+    }
     body {
+        margin: 0;
         font-family: 'Segoe UI', sans-serif;
-        background: linear-gradient(to bottom right, #e3f2fd, #bbdefb);
+        height: 100vh;
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 100vh;
-        margin: 0;
+        background: linear-gradient(135deg, #90caf9, #42a5f5, #1e88e5);
+        background-size: 200% 200%;
+        animation: gradientMove 6s ease infinite;
+        overflow: hidden;
     }
+    @keyframes gradientMove {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    /* 💸 icon nền */
+    .money-bg {
+        position: absolute;
+        font-size: 120px;
+        color: rgba(255,255,255,0.1);
+        animation: float 10s ease-in-out infinite;
+    }
+    .money-bg:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
+    .money-bg:nth-child(2) { top: 60%; left: 70%; animation-delay: 3s; }
+    .money-bg:nth-child(3) { top: 30%; left: 80%; animation-delay: 6s; }
+
+    @keyframes float {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-20px); }
+    }
+
     .login-box {
-        background: white;
+        background: rgba(255,255,255,0.95);
         padding: 40px;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        text-align: center;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         width: 320px;
+        text-align: center;
+        z-index: 1;
     }
+
     h2 {
         color: #1565c0;
         margin-bottom: 20px;
     }
+
     input {
         width: 90%;
         padding: 10px;
         margin: 8px 0;
-        border-radius: 8px;
+        border-radius: 10px;
         border: 1px solid #ccc;
         text-align: center;
     }
+
     input:focus {
         border-color: #42a5f5;
+        box-shadow: 0 0 8px #90caf9;
         outline: none;
-        box-shadow: 0 0 5px #90caf9;
     }
+
     button {
         background: #42a5f5;
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 10px;
         padding: 10px 20px;
         cursor: pointer;
         width: 100%;
         font-size: 16px;
+        transition: background 0.3s;
     }
+
     button:hover {
         background: #1e88e5;
     }
+
     a {
+        color: #1565c0;
         text-decoration: none;
-        color: #1e88e5;
     }
+
     a:hover {
         text-decoration: underline;
     }
 </style>
 </head>
 <body>
+    <!-- Nền bay 💸 -->
+    <div class="money-bg">💸</div>
+    <div class="money-bg">💰</div>
+    <div class="money-bg">💵</div>
+
     <div class="login-box">
         <h2>🔐 Đăng nhập</h2>
         <form method="POST">
