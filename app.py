@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 
 app = Flask(__name__)
 lich_su = []  # lưu tạm trong bộ nhớ (reset khi restart)
@@ -19,6 +19,12 @@ def home():
         except ValueError:
             tong_tien = "Vui lòng nhập số hợp lệ."
     return render_template("index.html", tong_tien=tong_tien, lich_su=lich_su)
+
+@app.route("/clear")
+def clear_history():
+    """Xóa toàn bộ lịch sử tính tiền"""
+    lich_su.clear()
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)
