@@ -9,7 +9,8 @@ def home():
         try:
             gia = float(request.form["gia"])
             so_luong = int(request.form["so_luong"])
-            tong_tien = gia * so_luong
+            tong_tien = f"{gia * so_luong:,.0f}".replace(",", ".")
+
         except ValueError:
             tong_tien = "Vui lòng nhập số hợp lệ."
     return render_template("index.html", tong_tien=tong_tien)
