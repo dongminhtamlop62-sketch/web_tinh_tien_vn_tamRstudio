@@ -1,166 +1,98 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Đăng nhập</title>
-<style>
-    * {
-        box-sizing: border-box;
-    }
-    body {
-        margin: 0;
-        font-family: 'Segoe UI', sans-serif;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(135deg, #90caf9, #42a5f5, #1e88e5);
-        background-size: 200% 200%;
-        animation: gradientMove 6s ease infinite;
-        overflow: hidden;
-    }
-    @keyframes gradientMove {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
-    /* 💸 icon nền */
-    .money-bg {
-        position: absolute;
-        font-size: 120px;
-        color: rgba(255,255,255,0.1);
-        animation: float 10s ease-in-out infinite;
-    }
-    .money-bg:nth-child(1) { top: 10%; left: 20%; animation-delay: 0s; }
-    .money-bg:nth-child(2) { top: 60%; left: 70%; animation-delay: 3s; }
-    .money-bg:nth-child(3) { top: 30%; left: 80%; animation-delay: 6s; }
-
-    @keyframes float {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-20px); }
-    }
-
-    .login-box {
-        background: rgba(255,255,255,0.95);
-        padding: 40px;
-        border-radius: 20px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        width: 320px;
-        text-align: center;
-        z-index: 1;
-    }
-
-    h2 {
-        color: #1565c0;
-        margin-bottom: 20px;
-    }
-
-    input {
-        width: 90%;
-        padding: 10px;
-        margin: 8px 0;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-        text-align: center;
-    }
-
-    input:focus {
-        border-color: #42a5f5;
-        box-shadow: 0 0 8px #90caf9;
-        outline: none;
-    }
-
-    button {
-        background: #42a5f5;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        padding: 10px 20px;
-        cursor: pointer;
-        width: 100%;
-        font-size: 16px;
-        transition: background 0.3s;
-    }
-
-    button:hover {
-        background: #1e88e5;
-    }
-
-    a {
-        color: #1565c0;
-        text-decoration: none;
-    }
-
-    a:hover {
-        text-decoration: underline;
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng nhập</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: linear-gradient(to right, #f5f7fa, #c3cfe2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-box {
+            background: white;
+            padding: 40px 50px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            text-align: center;
+            width: 350px;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 25px;
+        }
+        input {
+            width: 85%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            outline: none;
+        }
+        input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 4px rgba(76,175,80,0.4);
+        }
+        button {
+            width: 90%;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+        .login-btn {
+            background: #4CAF50;
+            color: white;
+        }
+        .login-btn:hover {
+            background: #43a047;
+        }
+        .google-btn {
+            background: white;
+            border: 1px solid #ccc;
+            color: #555;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+        .google-btn img {
+            width: 20px;
+        }
+        .google-btn:hover {
+            background: #f7f7f7;
+        }
+        p {
+            margin-top: 15px;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
-    <!-- Nền bay 💸 -->
-    <div class="money-bg">💸</div>
-    <div class="money-bg">💰</div>
-    <div class="money-bg">💵</div>
-
     <div class="login-box">
-        <h2>🔐 Đăng nhập</h2>
-        <form method="POST">
-            <input name="username" placeholder="Tên người dùng" required><br>
-            <input type="password" name="password" placeholder="Mật khẩu" required><br>
-            <button type="submit">Đăng nhập</button>
+        <h1>🔐 Đăng nhập</h1>
+
+        <form method="POST" action="/login">
+            <input type="text" name="username" placeholder="Tên người dùng" required>
+            <input type="password" name="password" placeholder="Mật khẩu" required>
+            <button class="login-btn" type="submit">Đăng nhập</button>
         </form>
-        <p>Chưa có tài khoản? <a href="{{ url_for('register') }}">Đăng ký ngay</a></p>
+
+        <p>Hoặc</p>
+        <a href="{{ url_for('google.login') }}">
+            <button class="google-btn" type="button">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google logo">
+                <span>Đăng nhập bằng Google</span>
+            </button>
+        </a>
     </div>
 </body>
 </html>
-<p>Hoặc</p>
-
-<a href="{{ url_for('google.login') }}" style="text-decoration:none;">
-    <div class="google-btn">
-        <div class="google-icon-wrapper">
-            <img class="google-icon"
-                 src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png"
-                 alt="Google">
-        </div>
-        <p class="btn-text"><b>Đăng nhập bằng Google</b></p>
-    </div>
-</a>
-
-<style>
-/* Nút đăng nhập Google */
-.google-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    border: 1px solid #dadce0;
-    border-radius: 6px;
-    padding: 10px 15px;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    transition: all 0.3s ease;
-    width: 220px;
-    margin-top: 10px;
-}
-.google-btn:hover {
-    background-color: #f7f7f7;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-}
-.google-icon-wrapper {
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-}
-.google-icon {
-    width: 20px;
-    height: 20px;
-}
-.btn-text {
-    color: #3c4043;
-    font-size: 14px;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-}
-</style>
