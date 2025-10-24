@@ -115,3 +115,52 @@
     </div>
 </body>
 </html>
+<p>Hoặc</p>
+
+<a href="{{ url_for('google.login') }}" style="text-decoration:none;">
+    <div class="google-btn">
+        <div class="google-icon-wrapper">
+            <img class="google-icon"
+                 src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Logo_2013_Google.png"
+                 alt="Google">
+        </div>
+        <p class="btn-text"><b>Đăng nhập bằng Google</b></p>
+    </div>
+</a>
+
+<style>
+/* Nút đăng nhập Google */
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border: 1px solid #dadce0;
+    border-radius: 6px;
+    padding: 10px 15px;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    width: 220px;
+    margin-top: 10px;
+}
+.google-btn:hover {
+    background-color: #f7f7f7;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.google-icon-wrapper {
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+}
+.google-icon {
+    width: 20px;
+    height: 20px;
+}
+.btn-text {
+    color: #3c4043;
+    font-size: 14px;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+}
+</style>
