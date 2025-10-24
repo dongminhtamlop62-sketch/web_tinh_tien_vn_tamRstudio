@@ -1,84 +1,53 @@
-from flask import Flask, render_template, request, redirect, url_for, session
-import json, os
+from flask import Flask, redirect, url_for, render_template, request, session
+from flask_dance.contrib.google import make_google_blueprint, google
+import os
 
 app = Flask(__name__)
-app.secret_key = "supersecret"
+app.secret_key = "supersecretkey"
 
-# --- Hàm quản lý người dùng ---
-def load_users():
-    if os.path.exists("users.json"):
-        with open("users.json", "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+# Cho phép HTTP khi chạy local
+os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
-def save_users(users):
-    with open("users.json", "w", encoding="utf-8") as f:
-        json.dump(users, f, ensure_ascii=False, indent=4)
+# --- Cấu hình đăng nhập Google ---
+google_bp = make_google_blueprint(
+    client_id="CLIENT_ID_CỦA_BẠN",
+    client_secret="CLIENT_SECRET_CỦA_BẠN",
+    redirect_to="google_login"
+)
+app.register_blueprint(google_bp, url_prefix="/login")
 
-# --- Trang chính ---
+# --- Trang chủ ---
 @app.route("/", methods=["GET", "POST"])
 def home():
-    if "username" not in session:
-        return redirect(url_for("login"))
-
-    users = load_users()
-    user = users.get(session["username"], {"lich_su": []})
+    username = session.get("username")
     tong_tien = None
-
     if request.method == "POST":
         try:
             gia = float(request.form["gia"])
             so_luong = int(request.form["so_luong"])
-            tong_tien = gia * so_luong
-            user["lich_su"].append({
-                "gia": gia,
-                "so_luong": so_luong,
-                "tong": tong_tien
-            })
-            users[session["username"]] = user
-            save_users(users)
-        except ValueError:
-            tong_tien = "Lỗi: nhập không hợp lệ"
+            tong_tien = f"{gia * so_luong:,.0f}".replace(",", ".")
+        except:
+            tong_tien = "Lỗi nhập dữ liệu!"
+    return render_template("index.html", username=username, tong_tien=tong_tien)
 
-    return render_template("index.html", tong_tien=tong_tien, lich_su=user["lich_su"])
+# --- Khi người dùng đăng nhập bằng Google ---
+@app.route("/google")
+def google_login():
+    if not google.authorized:
+        return redirect(url_for("google.login"))  # <-- dòng này chính xác
 
-# --- Đăng nhập ---
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    users = load_users()
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-
-        if username in users and users[username]["password"] == password:
-            session["username"] = username
-            return redirect(url_for("home"))
-        else:
-            return "Sai tài khoản hoặc mật khẩu!"
-
-    return render_template("login.html")
-
-# --- Đăng ký ---
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    users = load_users()
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-
-        if username in users:
-            return "Tài khoản đã tồn tại!"
-        else:
-            users[username] = {"password": password, "lich_su": []}
-            save_users(users)
-            return redirect(url_for("login"))
-    return render_template("register.html")
+    resp = google.get("/oauth2/v2/userinfo")
+    if resp.ok:
+        info = resp.json()
+        session["username"] = info["email"]
+        return redirect(url_for("home"))
+    return "Đăng nhập Google thất bại!"
 
 # --- Đăng xuất ---
 @app.route("/logout")
 def logout():
     session.pop("username", None)
-    return redirect(url_for("login"))
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
     app.run(debug=True)
