@@ -3,39 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trang Tính Tiền</title>
+    <title>💰 Trang Tính Tiền</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: linear-gradient(to bottom right, #f5f7fa, #c3cfe2);
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom right, #e3e9f0, #c3cfe2);
             text-align: center;
-            margin-top: 50px;
+            margin: 0;
+            padding: 0;
         }
-        h1 {
-            font-size: 2rem;
+
+        .navbar {
+            background: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px;
+            text-align: right;
+        }
+
+        .navbar a {
+            text-decoration: none;
             color: #333;
+            margin: 0 10px;
+            font-weight: bold;
         }
+
+        .navbar a:hover {
+            color: #007bff;
+        }
+
+        h1 {
+            margin-top: 40px;
+        }
+
         form {
             background: white;
             display: inline-block;
-            padding: 25px 40px;
+            padding: 30px 50px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.15);
             margin-top: 20px;
         }
+
         input {
             margin: 10px;
-            padding: 10px;
-            width: 180px;
+            padding: 8px;
+            width: 200px;
             border: 1px solid #ccc;
             border-radius: 8px;
             outline: none;
-            text-align: center;
         }
+
         input:focus {
             border-color: #4CAF50;
             box-shadow: 0 0 5px rgba(76,175,80,0.5);
         }
+
         button {
             padding: 10px 20px;
             background: #4CAF50;
@@ -43,61 +65,68 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            margin-top: 10px;
         }
+
         button:hover {
             background: #45a049;
         }
-        h2 {
-            color: #222;
-            margin-top: 30px;
-            font-size: 1.4rem;
-        }
+
         .google-btn {
-            background: #fff;
+            display: inline-flex;
+            align-items: center;
+            background: white;
             border: 1px solid #ccc;
             border-radius: 8px;
             padding: 8px 15px;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+            font-weight: bold;
+            color: #555;
+            text-decoration: none;
+            margin-top: 15px;
         }
+
         .google-btn img {
-            width: 20px;
             height: 20px;
             margin-right: 8px;
         }
-        .logout-btn {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 15px;
-            cursor: pointer;
+
+        table {
+            margin: 30px auto;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
         }
-        .logout-btn:hover {
-            background: #c0392b;
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px 15px;
         }
+
+        th {
+            background: #f3f3f3;
+        }
+
     </style>
 </head>
 <body>
+
+    <!-- THANH MENU -->
+    <div class="navbar">
+        {% if username %}
+            👤 Xin chào, <b>{{ username }}</b>
+            <a href="{{ url_for('logout') }}">🚪 Đăng xuất</a>
+        {% else %}
+            <a href="{{ url_for('login') }}">🔑 Đăng nhập</a>
+            <a href="{{ url_for('register') }}">📝 Đăng ký</a>
+            <a class="google-btn" href="{{ url_for('google.login') }}">
+                <img src="https://developers.google.com/identity/images/g-logo.png" alt="G"> Đăng nhập Google
+            </a>
+        {% endif %}
+    </div>
+
     <h1>💰 Trang Tính Tiền</h1>
 
-    {% if username %}
-        <p>👋 Xin chào, <b>{{ username }}</b></p>
-        <a href="{{ url_for('logout') }}">
-            <button class="logout-btn">🚪 Đăng xuất</button>
-        </a>
-    {% else %}
-        <a href="{{ url_for('google.login') }}">
-            <button class="google-btn">
-                <img src="https://developers.google.com/identity/images/g-logo.png" alt="Google Logo">
-                <span>Đăng nhập bằng Google</span>
-            </button>
-        </a>
-    {% endif %}
-
+    <!-- FORM TÍNH TIỀN -->
     <form method="POST">
         <label>Giá (VNĐ):</label><br>
         <input type="number" step="0.01" name="gia" required><br>
@@ -109,27 +138,23 @@
     {% if tong_tien %}
         <h2>Kết quả: {{ tong_tien }} VNĐ</h2>
     {% endif %}
+
+    {% if username and lich_su %}
+        <h2>🧾 Lịch sử tính tiền:</h2>
+        <table>
+            <tr><th>Giá</th><th>Số lượng</th><th>Tổng</th></tr>
+            {% for item in lich_su %}
+            <tr>
+                <td>{{ "{:,.0f}".format(item.gia).replace(",", ".") }}</td>
+                <td>{{ item.so_luong }}</td>
+                <td><b>{{ "{:,.0f}".format(item.tong).replace(",", ".") }}</b></td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a href="{{ url_for('clear_history') }}">
+            <button style="background:#dc3545;">🗑️ Xóa lịch sử</button>
+        </a>
+    {% endif %}
+
 </body>
 </html>
-{% if lich_su %}
-
-<h2>🧾 Lịch sử tính tiền:</h2>
-<table style="margin:auto; border-collapse: collapse;">
-    <tr><th>Giá</th><th>Số lượng</th><th>Tổng</th></tr>
-    {% for item in lich_su %}
-    <tr>
-        <td>{{ "{:,.0f}".format(item.gia).replace(",", ".") }} VNĐ</td>
-        <td>{{ item.so_luong }}</td>
-        <td><b>{{ "{:,.0f}".format(item.tong).replace(",", ".") }} VNĐ</b></td>
-    </tr>
-    {% endfor %}
-</table>
-
-<br>
-<a href="{{ url_for('clear_history') }}">
-    <button style="background:#e74c3c; color:white; border:none; border-radius:8px; padding:8px 15px; cursor:pointer;">
-        🗑️ Xóa lịch sử
-    </button>
-</a>
-{% endif %}
-
