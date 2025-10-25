@@ -9,9 +9,11 @@ app.secret_key = "supersecretkey"
 os.environ["OAUTHLIB_INSECURE_TRANSPORT"] = "1"
 
 # --- Cấu hình đăng nhập Google ---
+import os
+
 google_bp = make_google_blueprint(
-    client_id="GOOGLE_CLIENT_ID",
-    client_secret="GOOGLE_CLIENT_ID",
+    client_id=os.getenv("GOOGLE_CLIENT_ID"),
+    client_secret=os.getenv("GOOGLE_CLIENT_SECRET"),
     redirect_to="google_login"
 )
 app.register_blueprint(google_bp, url_prefix="/login")
